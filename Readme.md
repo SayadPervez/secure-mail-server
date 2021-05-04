@@ -3,6 +3,7 @@
 - [Abstract](#abstract-)
 - [Prerequisite](#prerequisite-)
 - [Calling from a website](#calling-from-a-website-)
+    - [Sample website made from secure-mail-server](https://secure-mail-server.herokuapp.com/)
 - [Calling from a NodeJS App](#caling-from-a-nodejs-app-)
 - [Issues we are inviting contributors to fix](#issues-we-are-inviting-contributors-to-fix-)
 - [Contributors](#contributors-)
@@ -81,6 +82,8 @@ console.log("\n");
 console.log("Mail status : "+String(data.status));
 });
 ```
+
+### [Sample website made from secure-mail-server](https://secure-mail-server.herokuapp.com/)
 
 ---
 
