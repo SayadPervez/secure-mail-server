@@ -10,7 +10,10 @@ app.use(express.static("./views"));
 
 function mailer__(from="",pwd="",to="",sub="",cont="",sid){
             var transporter = nodemailer.createTransport({
-            service: 'gmail',
+            /*service: 'gmail',*/
+            host: 'smtp.gmail.com',
+            port: 465,
+            secure: true,
             auth: {
                 user: from,
                 pass: pwd
@@ -46,7 +49,6 @@ io.on('connection', (socket) => {
   });
   socket.on("SendMail",(x)=>{
     var ans=mailer__(x.from,x.pwd,x.to,x.sub,x.body,socket.id);
-
   });
 
 });
