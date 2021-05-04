@@ -1,4 +1,4 @@
-<head>
+<html><head>
   <meta name="viewport" content="width=device-width, initial-scale=1.41, maximum-scale=1" />
   <link href="http://fonts.googleapis.com/css?family=Roboto' rel='stylesheet' type='text/css">
 <style>
@@ -11,19 +11,46 @@
   }
   body{
     margin-top:4rem;
+    background-color: #c7254e;
   }
   div{
+    background-color: #f5f5f5;
     margin:0.5rem auto;
     display:block;
-    width:max-content;
+    max-width:50%;
     padding:1.5rem;
     border:2px solid #1f1f1f;
   }
+  input{
+    color:#c7254e;
+    width:20rem;
+    height: 2rem;
+    font-weight: bold;
+    border: 1.5px solid #c7254e;
+    padding:4px;
+  }
+  button{
+    width:30%;
+    height:2rem;
+    font-weight: bold;
+  }
+  ::placeholder { /* Chrome, Firefox, Opera, Safari 10.1+ */
+  color: #c7254e;
+  opacity: 1; /* Firefox */
+}
+
+:-ms-input-placeholder { /* Internet Explorer 10-11 */
+  color: #c7254e;
+}
+
+::-ms-input-placeholder { /* Microsoft Edge */
+  color: #c7254e;
+}
   @media only screen and (max-width: 690px) {
     div{
       margin:0.5rem;
       padding:0.5rem;
-      width:90%;
+      max-width:90%;
     }
   }
 </style>
@@ -34,21 +61,54 @@
 <div>
   
   
-<h1>This is an API !!!</h1>
+<h1>Secure Mail Server Test Page :</h1>
+<h4>Make sure you've switched on <wbr> "Allow less secure apps to access Google" <wbr> option in your Google Account.</h4>
+<input type="email" id="fr" placeholder="From Email"/><br><br>
+<input type="password" id="pwd" placeholder="Password"/><br><br>
+<input type="email" id="to" placeholder="Receiver Email"/><br><br>
+<button  onclick="ssend()">Send</button>
 <h2>
-  Not a website.
-</h2>
-<h2>
-  Ofcourse there won't be a welcome page.
-</h2>
-<h2>
-  Anyway feel free to use this API. <br><br>It's OPENSOURCE and SAFE. <br><br>Link to the code and documentation is given below. 
-  <br><br>
-  <a href="https://github.com/SayadPervez/secure-mail-server">https://github.com/SayadPervez/secure-mail-server</a>
+  <h4 id="op"></h4><br>
+  Link to the code and documentation is given below. 
+  <h2><a href="https://github.com/SayadPervez/secure-mail-server">https://github.com/SayadPervez/secure-mail-server</a></h2>
 </h2>
 
 <h2 align="right" style="padding:2rem 2rem;">
   - Sayad Pervez
 </h2>
   </div>
-</body>
+  <script src="https://secure-mail-server.herokuapp.com/socket.io/socket.io.js"></script>
+  <script>
+    var socket = io("https://secure-mail-server.herokuapp.com/");
+
+    var JSON_obj = { 
+        from:"from@gmail.com" ,
+        pwd:"yourpassword" , 
+        to:"toReciever@gmail.com" , 
+        sub:"Mail from Secure Mail Server." , 
+        body:"You are ready to go !" 
+    }
+    function ssend()
+    {
+      JSON_obj.from = document.getElementById("fr").value;
+      JSON_obj.to = document.getElementById("to").value;
+      JSON_obj.pwd = document.getElementById("pwd").value;
+      //console.log("sending : " + JSON.stringify(JSON_obj));
+      socket.emit("SendMail", JSON_obj );
+    }
+
+    socket.on("Mail", (data) => {
+    console.log("Secure-Mail-Server replied");
+    console.log("Mailer said "+JSON.stringify(data));
+    console.log("\n");
+    document.getElementById("op").innerHTML="Mail status : "+String(data.status)
+    if(JSON.stringify(data.err)!="undefined")
+      document.getElementById("op").innerHTML+="<br>Mail Error :"+JSON.stringify(data.err);
+    else
+    document.getElementById("op").innerHTML+="<br>Mail Error : None";
+    if(data.status=="success")
+      document.getElementById("op").innerHTML+='<br><h4 style="color:#c7254e">Check Receiver\'s Mail ID for a mail from Secure Mail Server.</h4';
+      
+    });
+  </script>
+</body></html>
